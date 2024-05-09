@@ -5,10 +5,11 @@ import { useState } from "react";
 import { Button, TextField, Typography, Container } from "@mui/material";
 import PokedexTable from "../components/PokedexTable";
 import { trpc } from "../_trpc/client";
+import { PokemonData } from "./GetPokemon";
 
 const GetPokemons = () => {
   const [pokemonNames, setPokemonNames] = useState<string>("");
-  const [pokemonArray, setPokemonArray] = useState<string[]>([]);
+  const [pokemonArray, setPokemonArray] = useState<PokemonData[]>([]);
   const getPokemons = trpc.getPokemons.useMutation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

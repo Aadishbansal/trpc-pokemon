@@ -14,7 +14,7 @@ import PokemonRow from "./PokemonRow";
 import { PokemonData } from "../_component/GetPokemon";
 
 interface PokedexTableProps {
-  pokemonArray: string[];
+  pokemonArray: PokemonData[];
 }
 
 const PokedexTable: React.FC<PokedexTableProps> = ({ pokemonArray }) => {

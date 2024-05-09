@@ -16,16 +16,17 @@ const PokemonTypeSelection: React.FC<PokemonTypeSelectionProps> = ({
   const [type, setType] = useState<string | undefined>(selectedType);
   const { data: types } = trpc.getTypes.useQuery();
 
-  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    const selectedValue = event.target.value as string | undefined;
-    setType(selectedValue);
-    selectType(selectedValue);
-  };
-
   return (
     <FormControl fullWidth>
       <InputLabel>Select Pokemon Type</InputLabel>
-      <Select value={type ?? ""} onChange={handleChange}>
+      <Select
+        value={type ?? ""}
+        onChange={(e) => {
+          const selectedValue = e.target.value as string | undefined;
+          setType(selectedValue);
+          selectType(selectedValue);
+        }}
+      >
         {types?.map((t) => (
           <MenuItem key={t} value={t}>
             {t}
