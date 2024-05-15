@@ -1,4 +1,3 @@
-// pages/index.tsx
 "use client";
 
 import { useState } from "react";
@@ -10,24 +9,26 @@ import { PokemonData } from "./GetPokemon";
 const GetPokemons = () => {
   const [pokemonNames, setPokemonNames] = useState<string>("");
   const [pokemonArray, setPokemonArray] = useState<PokemonData[]>([]);
-  const getPokemons = trpc.getPokemons.useMutation();
+  const [queryKey, setQueryKey] = useState<string[]>([]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const getPokemonsQuery = trpc.getPokemons.useQuery(queryKey, {
+    enabled: queryKey.length > 0,
+    onSuccess: (data) => {
+      setPokemonArray(data);
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const names = pokemonNames.split(",");
-    const validName = [];
-    for (const name of names) {
-      const str = name.trim();
-      if (str.length) validName.push(str);
-    }
-    if (validName?.length) {
-      const data: any = await getPokemons.mutateAsync(validName);
-      setPokemonArray(data);
+    const validNames = names.map((name) => name.trim()).filter((name) => name.length > 0);
+    if (validNames.length > 0) {
+      setQueryKey(validNames);
     }
   };
 
   return (
-    <div >
+    <div>
       <Typography variant="h5" gutterBottom>
         Enter Pokemon Names
       </Typography>
@@ -40,7 +41,9 @@ const GetPokemons = () => {
           variant="outlined"
           margin="normal"
         />
-        <p>Please enter comma separated pokemon name </p>
+        <Typography variant="body2" color="textSecondary">
+          Please enter comma-separated pokemon names.
+        </Typography>
         <Button type="submit" variant="contained" color="primary">
           Submit
         </Button>

@@ -21,9 +21,9 @@ export const appRouter = router({
         sprite: pokemon.sprite,
       };
     }),
-  getPokemons: publicProcedure
+    getPokemons: publicProcedure
     .input(z.array(z.string()))
-    .mutation(async ({ input }) => {
+    .query(async ({ input }) => {
       const pokemons = await prisma.pokemon.findMany({
         where: {
           name: {
